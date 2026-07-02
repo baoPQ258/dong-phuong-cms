@@ -1,0 +1,49 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tin_tucs",
+  "info": {
+    "singularName": "tin-tuc",
+    "pluralName": "tin-tucs",
+    "displayName": "tin-tuc "
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "tieu_de": {
+      "type": "string"
+    },
+    "tom_tat": {
+      "type": "text"
+    },
+    "noi_dung": {
+      "type": "text"
+    },
+    "slug": {
+      "type": "uid"
+    },
+    "hinh_anh": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "danh_muc": {
+      "type": "enumeration",
+      "enum": [
+        "thong-bao",
+        "tuyen-sinh",
+        "lich-thi",
+        "tai-lieu"
+      ]
+    },
+    "phu_de": {
+      "type": "string"
+    }
+  }
+}

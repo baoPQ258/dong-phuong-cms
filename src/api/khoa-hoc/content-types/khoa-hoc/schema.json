@@ -1,0 +1,43 @@
+{
+  "kind": "collectionType",
+  "collectionName": "khoa_hocs",
+  "info": {
+    "singularName": "khoa-hoc",
+    "pluralName": "khoa-hocs",
+    "displayName": "khoa-hoc"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "ten": {
+      "type": "string"
+    },
+    "mo_ta": {
+      "type": "text"
+    },
+    "hoc_phi": {
+      "type": "biginteger"
+    },
+    "thoi_gian": {
+      "type": "string"
+    },
+    "hinh_anh": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "noi_bat": {
+      "type": "boolean"
+    },
+    "slug": {
+      "type": "uid"
+    }
+  }
+}

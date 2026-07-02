@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "trang_chus",
+  "info": {
+    "singularName": "trang-chu",
+    "pluralName": "trang-chus",
+    "displayName": "trang-chu "
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "tieu_de": {
+      "type": "string"
+    },
+    "tom_tat": {
+      "type": "string"
+    },
+    "noi_dung": {
+      "type": "blocks"
+    },
+    "hinh_anh": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "slug": {
+      "type": "uid"
+    }
+  }
+}
