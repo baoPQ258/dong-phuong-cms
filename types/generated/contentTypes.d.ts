@@ -495,6 +495,10 @@ export interface ApiTinTucTinTuc extends Struct.CollectionTypeSchema {
     danh_muc: Schema.Attribute.Enumeration<
       ['thong-bao', 'tuyen-sinh', 'lich-thi', 'tai-lieu']
     >;
+    File: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
     hinh_anh: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
       true

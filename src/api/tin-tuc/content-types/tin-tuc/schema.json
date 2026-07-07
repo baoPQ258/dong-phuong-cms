@@ -44,6 +44,16 @@
     },
     "phu_de": {
       "type": "string"
+    },
+    "File": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
     }
   }
 }
