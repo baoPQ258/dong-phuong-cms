@@ -493,7 +493,14 @@ export interface ApiTinTucTinTuc extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     danh_muc: Schema.Attribute.Enumeration<
-      ['thong-bao', 'tuyen-sinh', 'lich-thi', 'tai-lieu']
+      [
+        'thong-bao',
+        'tuyen-sinh',
+        'lich-thi',
+        'tai-lieu',
+        'ket-qua',
+        'quyet-dinh',
+      ]
     >;
     File: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
