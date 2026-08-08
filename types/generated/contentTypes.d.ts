@@ -441,6 +441,46 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiChungChiChungChi extends Struct.CollectionTypeSchema {
+  collectionName: 'chung_chis';
+  info: {
+    displayName: 'Chung-chi';
+    pluralName: 'chung-chis';
+    singularName: 'chung-chi';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    cccd: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Private;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    file_chung_chi: Schema.Attribute.Media<'images' | 'files'>;
+    ho_ten: Schema.Attribute.String & Schema.Attribute.Required;
+    khoa_hoc: Schema.Attribute.Relation<'manyToOne', 'api::khoa-hoc.khoa-hoc'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::chung-chi.chung-chi'
+    > &
+      Schema.Attribute.Private;
+    ma_chung_chi: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    ngay_cap: Schema.Attribute.Date & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    so_dien_thoai: Schema.Attribute.String & Schema.Attribute.Required;
+    trang_thai: Schema.Attribute.Enumeration<['hoan_thanh', 'dang_hoc']> &
+      Schema.Attribute.DefaultTo<'hoan_thanh'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiKhoaHocKhoaHoc extends Struct.CollectionTypeSchema {
   collectionName: 'khoa_hocs';
   info: {
@@ -1071,6 +1111,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::chung-chi.chung-chi': ApiChungChiChungChi;
       'api::khoa-hoc.khoa-hoc': ApiKhoaHocKhoaHoc;
       'api::tin-tuc.tin-tuc': ApiTinTucTinTuc;
       'api::trang-chu.trang-chu': ApiTrangChuTrangChu;
