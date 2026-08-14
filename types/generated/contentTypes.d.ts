@@ -458,21 +458,27 @@ export interface ApiChungChiChungChi extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    diem_thuc_hanh: Schema.Attribute.Decimal;
+    diem_trac_nghiem: Schema.Attribute.Decimal;
     file_chung_chi: Schema.Attribute.Media<'images' | 'files'>;
+    ghi_chu: Schema.Attribute.Text;
+    gioi_tinh: Schema.Attribute.String;
     ho_ten: Schema.Attribute.String & Schema.Attribute.Required;
-    khoa_hoc: Schema.Attribute.Relation<'manyToOne', 'api::khoa-hoc.khoa-hoc'>;
+    khoa_thi_ngay: Schema.Attribute.Date;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::chung-chi.chung-chi'
     > &
       Schema.Attribute.Private;
-    ma_chung_chi: Schema.Attribute.String &
+    ngay_sinh: Schema.Attribute.Date & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    so_hieu_chung_chi: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
-    ngay_cap: Schema.Attribute.Date & Schema.Attribute.Required;
-    publishedAt: Schema.Attribute.DateTime;
-    so_dien_thoai: Schema.Attribute.String & Schema.Attribute.Required;
+    so_vao_so_goc: Schema.Attribute.String;
+    ten_chung_chi: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'Ch\u1EE9ng ch\u1EC9 \u1EE8ng d\u1EE5ng C\u00F4ng ngh\u1EC7 th\u00F4ng tin'>;
     trang_thai: Schema.Attribute.Enumeration<['hoan_thanh', 'dang_hoc']> &
       Schema.Attribute.DefaultTo<'hoan_thanh'>;
     updatedAt: Schema.Attribute.DateTime;
@@ -687,6 +693,44 @@ export interface PluginContentReleasesReleaseAction
     >;
     type: Schema.Attribute.Enumeration<['publish', 'unpublish']> &
       Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface PluginExportImportKkmExportImportConfig
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'export_import_kkm_configs';
+  info: {
+    displayName: 'Export Import Config';
+    pluralName: 'export-import-configs';
+    singularName: 'export-import-config';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    'content-manager': {
+      visible: false;
+    };
+    'content-type-builder': {
+      visible: false;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'plugin::export-import-kkm.export-import-config'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    selectedExportCollections: Schema.Attribute.JSON;
+    selectedImportCollections: Schema.Attribute.JSON;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1117,6 +1161,7 @@ declare module '@strapi/strapi' {
       'api::trang-chu.trang-chu': ApiTrangChuTrangChu;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
+      'plugin::export-import-kkm.export-import-config': PluginExportImportKkmExportImportConfig;
       'plugin::i18n.locale': PluginI18NLocale;
       'plugin::review-workflows.workflow': PluginReviewWorkflowsWorkflow;
       'plugin::review-workflows.workflow-stage': PluginReviewWorkflowsWorkflowStage;

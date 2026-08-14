@@ -15,33 +15,46 @@
       "type": "string",
       "required": true
     },
-    "so_dien_thoai": {
-      "type": "string",
+    "ngay_sinh": {
+      "type": "date",
       "required": true
+    },
+    "gioi_tinh": {
+      "type": "string"
     },
     "cccd": {
       "type": "string",
       "required": true,
       "private": true
     },
-    "ma_chung_chi": {
+    "diem_trac_nghiem": {
+      "type": "decimal"
+    },
+    "diem_thuc_hanh": {
+      "type": "decimal"
+    },
+    "so_hieu_chung_chi": {
       "type": "string",
       "required": true,
       "unique": true
     },
-    "khoa_hoc": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::khoa-hoc.khoa-hoc"
+    "so_vao_so_goc": {
+      "type": "string"
     },
-    "ngay_cap": {
-      "type": "date",
-      "required": true
+    "khoa_thi_ngay": {
+      "type": "date"
+    },
+    "ten_chung_chi": {
+      "type": "string",
+      "default": "Chứng chỉ Ứng dụng Công nghệ thông tin"
     },
     "trang_thai": {
       "type": "enumeration",
       "enum": ["hoan_thanh", "dang_hoc"],
       "default": "hoan_thanh"
+    },
+    "ghi_chu": {
+      "type": "text"
     },
     "file_chung_chi": {
       "type": "media",
