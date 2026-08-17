@@ -19,6 +19,18 @@ function isRateLimited(ip: string): boolean {
   return record.count > LIMIT;
 }
 
+function dinhDangKetQua(ketQua: any) {
+  return {
+    ho_ten: ketQua.ho_ten,
+    ten_chung_chi: ketQua.ten_chung_chi,
+    so_hieu_chung_chi: ketQua.so_hieu_chung_chi,
+    so_vao_so_goc: ketQua.so_vao_so_goc,
+    khoa_thi_ngay: ketQua.khoa_thi_ngay,
+    trang_thai: ketQua.trang_thai,
+    file_chung_chi_url: ketQua.file_chung_chi?.url ?? null,
+  };
+}
+
 export default factories.createCoreController(
   "api::chung-chi.chung-chi",
   ({ strapi }) => ({
@@ -31,39 +43,59 @@ export default factories.createCoreController(
         );
       }
 
-      const { cccd, ngay_sinh } = ctx.request.body as {
+      const { cccd, ho_ten, ngay_sinh } = ctx.request.body as {
         cccd?: string;
-        ngay_sinh?: string; // dang "YYYY-MM-DD"
+        ho_ten?: string;
+        ngay_sinh?: string;
       };
 
-      if (!cccd || !ngay_sinh) {
-        return ctx.badRequest("Vui long nhap day du CCCD va ngay sinh.");
+      if (!ngay_sinh || (!cccd && !ho_ten)) {
+        return ctx.badRequest("Vui long nhap ngay sinh va (CCCD hoac Ho ten).");
       }
 
-      const cccdInput = String(cccd).trim();
+      // Ưu tiên tra bằng CCCD nếu có (an toàn hơn, luôn trả đúng 1 kết quả)
+      if (cccd) {
+        const ketQua: any = await strapi.db
+          .query("api::chung-chi.chung-chi")
+          .findOne({
+            where: {
+              cccd: String(cccd).trim(),
+              ngay_sinh,
+            },
+          });
 
-      const ketQua: any = await strapi.db
+        if (!ketQua) {
+          return ctx.notFound(
+            "Khong tim thay chung chi voi thong tin da nhap.",
+          );
+        }
+
+        return ctx.send(dinhDangKetQua(ketQua));
+      }
+
+      // Tra bằng Họ tên (dành cho dữ liệu cũ không có CCCD)
+      // Dùng $eqi để so khớp không phân biệt hoa/thường, khoảng trắng thừa
+      const danhSach: any[] = await strapi.db
         .query("api::chung-chi.chung-chi")
-        .findOne({
+        .findMany({
           where: {
-            cccd: cccdInput,
-            ngay_sinh: ngay_sinh,
+            ho_ten: { $eqi: String(ho_ten).trim() },
+            ngay_sinh,
           },
         });
 
-      if (!ketQua) {
+      if (danhSach.length === 0) {
         return ctx.notFound("Khong tim thay chung chi voi thong tin da nhap.");
       }
 
-      return ctx.send({
-        ho_ten: ketQua.ho_ten,
-        ten_chung_chi: ketQua.ten_chung_chi,
-        so_hieu_chung_chi: ketQua.so_hieu_chung_chi,
-        so_vao_so_goc: ketQua.so_vao_so_goc,
-        khoa_thi_ngay: ketQua.khoa_thi_ngay,
-        trang_thai: ketQua.trang_thai,
-        file_chung_chi_url: ketQua.file_chung_chi?.url ?? null,
-      });
+      if (danhSach.length > 1) {
+        // Trùng nhiều người cùng tên + cùng ngày sinh -> KHÔNG tự chọn đại 1 kết quả
+        return ctx.conflict(
+          "Tim thay nhieu ket qua trung khop. Vui long lien he truc tiep trung tam de duoc ho tro tra cuu chinh xac.",
+        );
+      }
+
+      return ctx.send(dinhDangKetQua(danhSach[0]));
     },
   }),
 );
